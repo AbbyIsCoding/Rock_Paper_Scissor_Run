@@ -7,7 +7,7 @@ public class Player {
     public int ypos;                //the y position
     public int width;
     public int height;
-    public boolean isAlive;            //a boolean to denote if the hero is alive or dead.
+    private boolean isAlive;         //a boolean to denote if the hero is alive or dead.
     public double dx;                    //the speed of the hero in the x direction
     public double ddx = .1;
     public int dy;                    //the speed of the hero in the y direction
@@ -23,6 +23,18 @@ public class Player {
     public boolean down;
     public boolean left;
     public boolean up;
+
+
+
+    // getter and setter methods for changing isAlive to private
+
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
+    public void setIsAlive(boolean x){
+        isAlive = x;
+    }
 
 
     public Player(int pXpos, int pYpos, int dxParameter, int dyParameter, Image picParameter) {

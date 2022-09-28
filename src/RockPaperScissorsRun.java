@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 //Keyboard and Mouse
 //Step 0 - Import
@@ -108,9 +109,17 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
     // This is the code that runs first and automatically
     public static void main(String[] args) {
         RockPaperScissorsRun myApp = new RockPaperScissorsRun();   //creates a new instance of the game
-        new Thread(myApp).start();                 //creates a threads & starts up the code in the run( ) method
+        new Thread(myApp).start();//creates a threads & starts up the code in the run( ) method
+
+
+      //trying to make an array list
+
+
     }
 
+
+
+  
 
     // Constructor Method
     // This has the same name as the class
@@ -119,6 +128,7 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
     public RockPaperScissorsRun() {
 
         setUpGraphics();
+
 
         //Step 3 - Keyboard use.  addKeyListener(this)
         canvas.addKeyListener(this);
@@ -162,7 +172,6 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
 
         user = new Player(100,400,10,0, blob1);
 
-        // choose = new Potion(500,400, blob1);
 
         enemyPics = new Image[6];
         enemyPics[0] = playerRockA;
@@ -172,6 +181,16 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
         enemyPics[4] = playerPaperB;
         enemyPics[5] = playerScissorsB;
 
+        // Trying to change enemy array into an array list. needs to do the same thing as the array below (what is missing?)
+//        ArrayList<Enemy> enemy = new ArrayList<Enemy>();
+//        for (int x=0;x<31;x++ ) {
+//            for (int i = 0; i < enemy.size(); i++) {
+//                int enemyNum = (int) (Math.random() * 3 + 1);
+//                enemy.get(i).enemyNum = enemyNum;
+//                enemy.add(new Enemy(1000 * 500, 400, -5, 0, enemyPics[enemyNum])); //????
+//
+//            }
+//        }
 
 
         enemy = new Enemy[30];
@@ -179,8 +198,8 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
             int enemyNum = (int)(Math.random()*3+1);
             enemy[i] = new Enemy(1000 + i*500, 400, -5, 0, enemyPics[enemyNum]);
             enemy[i].enemyNum = enemyNum;
-
-
+//
+//
         }
 
 
@@ -205,6 +224,8 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
 
         StartingScreen = Toolkit.getDefaultToolkit().getImage("RockPaperScissorStart.png");
         LostScreen = Toolkit.getDefaultToolkit().getImage("RPSRLoseScreen.png");
+
+
 
 
 
@@ -287,7 +308,7 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
                 }
                 // user deaths
                 else if ((user.objectNum == 1) && (enemy[i].enemyNum == 2)) {
-                    user.isAlive = false;
+                    user.setIsAlive(false);
                     user.ypos += 5;
                     collision = true;
 
@@ -295,14 +316,14 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
                 }
 
                 else if ((user.objectNum == 2) && (enemy[i].enemyNum == 3)) {
-                    user.isAlive = false;
+                    user.setIsAlive(false);
                     user.ypos += 5;
                     collision = true;
 
                 }
 
                 else if ((user.objectNum == 3) && (enemy[i].enemyNum == 1)) {
-                    user.isAlive = false;
+                    user.setIsAlive(false);
                     user.ypos += 5;
                     collision = true;
 
@@ -337,7 +358,7 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
 
         g.drawImage(Background, scroll, 0, 8000, 700, null);
 
-        if (user.isAlive == false) {
+        if (user.getIsAlive() == false) {
             timer++;
             if (timer > 80) {
                 youLost = true;
@@ -367,7 +388,7 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
         }
 
         //user image changes
-        if (user.isAlive == true){
+        if (user.getIsAlive() == true){
 
             if (user.objectNum == 0){
                 g.drawImage(blob1, (int)user.xpos, user.ypos, user.width, user.height, null);
@@ -389,7 +410,7 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
 
 
         //user death
-        if (user.isAlive == false){
+        if (user.getIsAlive() == false){
             g.drawImage(blob2, (int)user.xpos, user.ypos , user.width, user.height, null);
         }
 
@@ -407,7 +428,7 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
         g.setFont(new Font("TimesRoman", Font.PLAIN,30));
         g.drawString("Enemies Killed:   " + enemyCount, 750, 50);
 
-        if (user.isAlive == false){
+        if (user.getIsAlive() == false){
             backingSong.stop();
         }
 
@@ -491,13 +512,13 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
 
 
         //direction
-        if ((keyCode == 68) && (user.isBouncing == false)) {
+        if ((keyCode == 39) && (user.isBouncing == false)) {
             user.right = true;
         }//Right
         if ((keyCode == 83 )&& (user.isBouncing == false)) {
             user.down = true;
         }//Down
-        if ((keyCode == 65) && (user.isBouncing == false)) {
+        if ((keyCode == 37) && (user.isBouncing == false)) {
             user.left = true;
         }//Left
         if ((keyCode == 87) && (user.isBouncing == false)){
@@ -526,13 +547,13 @@ public class RockPaperScissorsRun implements Runnable, KeyListener {
         char key = event.getKeyChar();
         int keyCode = event.getKeyCode();
         //This method will do something when a key is released
-        if (keyCode == 68) {
+        if (keyCode == 39) {
             user.right = false;
         }
         if (keyCode == 83) {
             user.down = false;
         }
-        if (keyCode == 65) {
+        if (keyCode == 37) {
             user.left = false;
         }
         if (keyCode == 87) {
